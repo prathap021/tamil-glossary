@@ -1,7 +1,10 @@
 // ignore_for_file: prefer_const_constructors
 
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:http/http.dart' as http;
 
 void main() {
   runApp(MyApp());
@@ -15,7 +18,6 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
       darkTheme: ThemeData.dark(),
-      themeMode: ThemeMode.system,
       theme: ThemeData(primarySwatch: Colors.indigo),
       home: MyHome(),
     );
@@ -30,8 +32,16 @@ class MyHome extends StatefulWidget {
 }
 
 class _MyHomeState extends State<MyHome> {
-  final _input = TextEditingController();
+  String text1 = '';
   bool sw = false;
+  String url =
+      "https://ta.wiktionary.org/w/api.php?action=query&format=json&list=search&srsearch=";
+  getwords() async {
+    setState(() {});
+    final response = await http.get(Uri.parse(url + text1));
+
+    debugPrint(jsonEncode(jsonDecode(response.body)));
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -60,7 +70,7 @@ class _MyHomeState extends State<MyHome> {
                             return AlertDialog(
                               title: Center(
                                   child: Text(
-                                
+                                "",
                                 style: TextStyle(
                                     fontSize: 15, color: Colors.black),
                               )),
@@ -81,7 +91,11 @@ class _MyHomeState extends State<MyHome> {
               Padding(
                 padding: EdgeInsets.only(top: 100, left: 30, right: 30),
                 child: TextField(
-                    controller: _input,
+                    onChanged: (String text) {
+                      setState(() {});
+                      text1 = text;
+                      debugPrint(text1.toString());
+                    },
                     decoration: InputDecoration(
                         prefixIcon: Icon(Icons.search),
                         hintText: 'தமிழில் உள்ளீடு செய்யவும் ',
@@ -92,7 +106,9 @@ class _MyHomeState extends State<MyHome> {
               Padding(
                 padding: EdgeInsets.all(25),
                 child: ElevatedButton(
-                  onPressed: () {},
+                  onPressed: () {
+                    getwords();
+                  },
                   child: Text('தேடு'),
                   style: ElevatedButton.styleFrom(
                       shape: RoundedRectangleBorder(

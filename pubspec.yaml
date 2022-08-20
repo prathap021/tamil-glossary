@@ -37,6 +37,7 @@ dependencies:
   custom_switch: ^0.0.1
   rolling_switch: ^0.0.2
   get: ^4.6.1
+  http: ^0.13.5
 
 dev_dependencies:
   flutter_test:
