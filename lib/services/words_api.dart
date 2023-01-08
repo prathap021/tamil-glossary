@@ -1,6 +1,7 @@
 import 'dart:convert';
 import 'package:dio/dio.dart';
 
+
 import 'package:tamil_glossary/utils/constants.dart';
 
 import '../model/words_model.dart';
@@ -20,6 +21,7 @@ class Remoteservices {
         options: options, queryParameters: qParams);
     if (response.statusCode == 200) {
       var jsondata = jsonEncode(response.data["query"]["search"]);
+
       return tamilwordsFromJson(jsondata);
     } else {
       throw Exception("failed to load data");

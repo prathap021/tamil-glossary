@@ -3,7 +3,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
-import 'views/homepage.dart';
+import 'screens/homepage.dart';
 
 void main() {
   runApp(MyApp());
@@ -14,10 +14,6 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return GetMaterialApp(
-      debugShowCheckedModeBanner: false,
-      theme: ThemeData(primarySwatch: Colors.indigo),
-      home: MyHome(),
-    );
+    return GetMaterialApp(debugShowCheckedModeBanner: false, home: MyHome());
   }
 }
