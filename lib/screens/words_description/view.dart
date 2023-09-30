@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_html/flutter_html.dart';
 import 'package:get/get.dart';
+import 'package:like_button/like_button.dart';
 import 'package:tamil_glossary/screens/favorite/controller.dart';
 import 'package:tamil_glossary/screens/words_description/controller.dart';
 
@@ -11,13 +12,13 @@ class wordsview extends StatelessWidget {
     Key? key,
   }) : super(key: key);
 
-  emptywordadd() async {
-    debugPrint("Empty word added");
-    await word.savewords(Get.arguments.title.toString().obs,
-        Get.arguments.snippet.toString().obs);
-    await fav.getwords();
-    word.emptyword.value = true;
-  }
+  // emptywordadd() async {
+  //   debugPrint("Empty word added");
+  //   await word.savewords(Get.arguments.title.toString().obs,
+  //       Get.arguments.snippet.toString().obs);
+  //   await fav.getwords();
+  //   word.emptyword.value = true;
+  // }
 
   @override
   Widget build(BuildContext context) {
@@ -61,11 +62,17 @@ class wordsview extends StatelessWidget {
                       }),
                     ),
                   ),
-                  IconButton(
-                      onPressed: () {
-                        emptywordadd();
-                      },
-                      icon: Icon(Icons.favorite)),
+                  LikeButton(
+                    size: 20,
+                    circleColor: CircleColor(
+                        start: Color(0xff00ddff), end: Color(0xff0099cc)),
+                    bubblesColor: BubblesColor(
+                      dotPrimaryColor: Color(0xff33b5e5),
+                      dotSecondaryColor: Color(0xff0099cc),
+                    ),
+                   
+                 
+                  ),
                 ],
               ),
             ),
