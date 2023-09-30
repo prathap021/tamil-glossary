@@ -99,7 +99,7 @@ class Homeview extends StatelessWidget {
                                 //xcontroller: AnimationController(vsync: this, duration: const Duration(milliseconds: 1200)),
                               ),
                             );
-                          } else
+                          } else {
                             return Padding(
                               padding:
                                   const EdgeInsets.only(left: 10, right: 10),
@@ -120,6 +120,7 @@ class Homeview extends StatelessWidget {
                                         data: home.findedwords[index].title),
                                   )),
                             );
+                          }
                         }))
                     : Center(
                         child: Visibility(

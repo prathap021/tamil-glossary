@@ -1,5 +1,8 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.example.tamil_glossary">
+  
+<uses-permission android:name="android.permission.INTERNET" />
+
    <application
         android:label="tamil_glossary"
         android:name="${applicationName}"

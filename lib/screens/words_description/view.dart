@@ -44,12 +44,10 @@ class wordsview extends StatelessWidget {
                   Padding(
                     padding: const EdgeInsets.only(
                         top: 20, left: 10, right: 10, bottom: 5),
-                    child: Container(
-                      child: Text(
-                        Get.arguments.title.toString(),
-                        style: TextStyle(
-                            fontSize: 25, fontWeight: FontWeight.bold),
-                      ),
+                    child: Text(
+                      Get.arguments.title.toString(),
+                      style:
+                          TextStyle(fontSize: 25, fontWeight: FontWeight.bold),
                     ),
                   ),
                   Padding(
