@@ -5,18 +5,31 @@ import '../../API/words_api.dart';
 import '../../model/words_model.dart';
 
 class HomeController extends GetxController {
+  final scrollController = ScrollController().obs;
   final formKey = GlobalKey<FormState>().obs;
   final wordcontroller = TextEditingController().obs;
   Rx<Remoteservices> fetchdata = Remoteservices().obs;
   RxBool isloading = false.obs;
   RxBool loader = false.obs;
-  RxInt index = 0.obs;
+  RxBool isLoading = false.obs;
+  RxInt srsoffset = 0.obs;
   RxList<Tamilwords> findedwords = <Tamilwords>[].obs;
 
   @override
   void onInit() {
-    // TODO: implement onInit
     super.onInit();
+    findedwords.value.clear();
+    scrollController.value.addListener(() {
+      if (scrollController.value.position.maxScrollExtent ==
+          scrollController.value.position.pixels) {
+        if (!isLoading.value) {
+          isLoading.value = !isLoading.value;
+          srsoffset.value = srsoffset.value + 10;
+          fetchwords();
+          isLoading.value = !isLoading.value;
+        }
+      }
+    });
   }
 
   @override
@@ -27,7 +40,8 @@ class HomeController extends GetxController {
 
   void fetchwords() async {
     await fetchdata.value
-        .findwords(wordcontroller.value.text.trim().toString())
+        .findwords(wordcontroller.value.text.trim().toString(),
+            srsoffset.value.toString())
         .then((value) {
       findedwords.addAll(value!);
       debugPrint(value.length.toString());
