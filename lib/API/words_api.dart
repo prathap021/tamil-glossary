@@ -1,31 +1,49 @@
 import 'dart:convert';
+import 'dart:io';
 import 'package:dio/dio.dart';
-
 import 'package:tamil_glossary/utils/constants.dart';
 
+import 'package:tamil_glossary/utils/network_constants.dart';
+
+import 'package:fluttertoast/fluttertoast.dart';
 import '../model/words_model.dart';
+import '../widgets/commonwidgets.dart';
+import 'apiServices.dart';
+import 'package:flutter/material.dart';
+import 'package:internet_connection_checker/internet_connection_checker.dart';
 
 class Remoteservices {
-  Future<List<Tamilwords>?> findwords(String word, String page) async {
-    var dio = Dio();
-    var options = Options();
-    options.contentType = 'application/json';
-    Map<String, String> qParams = {
-      'action': 'query',
-      'format': 'json',
-      'list': 'search',
-      "sroffset": page,
-      'srsearch': word
-    };
-    var response = await dio.get(ApiServices.endpoint,
-        options: options, queryParameters: qParams);
-    print("Url ${ApiServices.endpoint + qParams.toString()}");
-    if (response.statusCode == 200) {
-      var jsondata = jsonEncode(response.data["query"]["search"]);
+  final ApiService _apiService = ApiService();
+  final ResponseWidget _responseWidget = ResponseWidget();
 
-      return tamilwordsFromJson(jsondata);
+  Future<List<Tamilwords>?> findWords(String word, String page) async {
+    Map<String, String> payload = {
+      NetworkConstants.action: AppConstants.query,
+      NetworkConstants.format: AppConstants.json,
+      NetworkConstants.list: AppConstants.search,
+      NetworkConstants.sroffset: page,
+      NetworkConstants.srsearch: word,
+    };
+    Response response = await _apiService.get(NetworkConstants.baseUrl,
+        queryParameters: payload);
+    if (response.data != null) {
+      if (response.statusCode == 200) {
+        return responsedata(response);
+      } else if (response.statusCode == 204) {
+        _responseWidget.showToast("No Data");
+        return responsedata(response);
+      } else {
+        _responseWidget.showToast("Server Error");
+        return responsedata(response);
+      }
     } else {
+      _responseWidget.showToast("Try Again");
       throw Exception("failed to load data");
     }
+  }
+
+  responsedata(Response response) {
+    dynamic jsondata = jsonEncode(response.data["query"]["search"]);
+    return tamilwordsFromJson(jsondata);
   }
 }

@@ -12,16 +12,19 @@ import 'pages.dart';
 class AppPages {
   static var pages = [
     GetPage(
+      transition: Transition.fadeIn,
       name: AppRoutes.home,
       page: () => Homeview(),
       binding: HomeBinding(),
     ),
     GetPage(
+      transition: Transition.fadeIn,
       name: AppRoutes.words,
       page: () => wordsview(),
       binding: WordsBinding(),
     ),
     GetPage(
+      transition: Transition.fadeIn,
       name: AppRoutes.favorite,
       page: () => Favoritewords(),
       binding: FavoriteBinding(),
