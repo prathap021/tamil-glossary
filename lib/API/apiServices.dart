@@ -1,15 +1,62 @@
+import 'dart:io';
+
 import 'package:dio/dio.dart';
+import 'package:flutter/rendering.dart';
+import 'package:get_storage/get_storage.dart';
 import 'package:tamil_glossary/utils/network_constants.dart';
 
 class ApiService {
-  static final _options = BaseOptions(
-    baseUrl: NetworkConstants.baseUrl,
-    connectTimeout: NetworkConstants.connectionTimeout,
-    receiveTimeout: NetworkConstants.receiveTimeout,
-    responseType: ResponseType.json,
-  );
+  final _dio = Dio();
+  final getbox = GetStorage();
 
-  final Dio _dio = Dio(_options)..interceptors.add(LogInterceptor());
+  ApiService() {
+    // getbox.remove("logCookies");
+    _dio.options = BaseOptions(
+      baseUrl: NetworkConstants.baseUrl,
+      connectTimeout: NetworkConstants.connectionTimeout,
+      receiveTimeout: NetworkConstants.receiveTimeout,
+      responseType: ResponseType.json,
+    );
+    _dio.interceptors.clear();
+    _dio.interceptors.add(QueuedInterceptorsWrapper(
+      onRequest: (options, handler) async {
+        options.headers['cookie'] = await getbox.read("logCookies");
+        return handler.next(options);
+      },
+      onResponse: (response, handler) {
+        var box = GetStorage();
+        response.headers.forEach((name, values) async {
+          if (name == HttpHeaders.setCookieHeader) {
+            final cookieMap = <String, String>{};
+
+            for (var c in values) {
+              var key = '';
+              var value = '';
+
+              key = c.substring(0, c.indexOf('='));
+              value = c.substring(key.length + 1, c.indexOf(';'));
+
+              cookieMap[key] = value;
+            }
+
+            var cookiesFormatted = '';
+
+            cookieMap
+                .forEach((key, value) => cookiesFormatted += '$key=$value; ');
+
+            getbox.write("logCookies", cookiesFormatted);
+            return;
+          }
+        });
+
+        return handler.next(response);
+      },
+    ));
+  }
+
+  bodyForm(dynamic form) {
+    return FormData.fromMap(form);
+  }
 
   // GET request
   Future<Response> get(
@@ -33,31 +80,31 @@ class ApiService {
     }
   }
 
-  // // POST request
-  // Future<Response> post(
-  //   String url, {
-  //   dynamic data,
-  //   Map<String, dynamic>? queryParameters,
-  //   Options? options,
-  //   CancelToken? cancelToken,
-  //   ProgressCallback? onSendProgress,
-  //   ProgressCallback? onReceiveProgress,
-  // }) async {
-  //   try {
-  //     final Response response = await _dio.post(
-  //       url,
-  //       data: data,
-  //       queryParameters: queryParameters,
-  //       options: options,
-  //       cancelToken: cancelToken,
-  //       onSendProgress: onSendProgress,
-  //       onReceiveProgress: onReceiveProgress,
-  //     );
-  //     return response;
-  //   } catch (e) {
-  //     rethrow;
-  //   }
-  // }
+  // POST request
+  Future<Response> post(
+    String url, {
+    dynamic data,
+    Map<String, dynamic>? queryParameters,
+    Options? options,
+    CancelToken? cancelToken,
+    ProgressCallback? onSendProgress,
+    ProgressCallback? onReceiveProgress,
+  }) async {
+    try {
+      final Response response = await _dio.post(
+        url,
+        data: data,
+        queryParameters: queryParameters,
+        options: options,
+        cancelToken: cancelToken,
+        onSendProgress: onSendProgress,
+        onReceiveProgress: onReceiveProgress,
+      );
+      return response;
+    } catch (e) {
+      rethrow;
+    }
+  }
 
   // // PUT request
   // Future<Response> put(

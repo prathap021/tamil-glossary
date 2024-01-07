@@ -10,6 +10,7 @@ import 'package:tamil_glossary/routes/pages.dart';
 import 'package:tamil_glossary/routes/routes.dart';
 import 'package:tamil_glossary/screens/setting/view.dart';
 import 'package:tamil_glossary/screens/words_description/view.dart';
+import 'package:tamil_glossary/utils/colors.dart';
 
 import '../favorite/view.dart';
 import 'controller.dart';
@@ -23,27 +24,6 @@ class Homeview extends StatelessWidget {
     return Obx(() => SafeArea(
           child: Scaffold(
               backgroundColor: Colors.grey.shade100,
-              // appBar: AppBar(
-              //   title: Text(
-              //     'தமிழ் சொற்களஞ்சியம்',
-              //     style: TextStyle(fontSize: 15),
-              //   ),
-              //   centerTitle: true,
-              //   actions: [
-              //     IconButton(
-              //         onPressed: () {
-              //           Get.isDarkMode
-              //               ? Get.changeTheme(ThemeData.light())
-              //               : Get.changeTheme(ThemeData.dark());
-              //         },
-              //         icon: Icon(Icons.lightbulb)),
-              //     IconButton(
-              //         onPressed: () {
-              //           Get.to(() => Favoritewords());
-              //         },
-              //         icon: Icon(Icons.history))
-              //   ],
-              // ),
               bottomNavigationBar: BottomNavigationBar(
                 items: const <BottomNavigationBarItem>[
                   BottomNavigationBarItem(
@@ -60,7 +40,7 @@ class Homeview extends StatelessWidget {
                   ),
                 ],
                 currentIndex: home.selectedindex.value,
-                selectedItemColor: Colors.amber[800],
+                selectedItemColor: AppColors.appbarcolor,
                 onTap: home.onItemTapped,
               ),
               body: [
@@ -102,46 +82,61 @@ class Homeview extends StatelessWidget {
                 gradient: LinearGradient(
                     begin: Alignment.topCenter,
                     end: Alignment.bottomCenter,
-                    colors: [Color(0xff4da0b0), Color(0xff4da0b0)]),
+                    colors: [AppColors.appbarcolor, AppColors.appbarcolor]),
               ),
             ),
+            // Positioned.fill(child: Text("தமிழ் சொற்களஞ்சியம்")),
+            Positioned(
+                top: 25,
+                left: 70,
+                right: 20,
+                child: Text(
+                  "தமிழ் சொற்களஞ்சியம்",
+                  style: TextStyle(fontSize: 20, color: Colors.white),
+                )),
             Positioned(
               top: 75,
               left: 20,
               right: 20,
               child: Form(
                 key: home.formKey.value,
-                child: SizedBox(
-                  height: 60,
-                  child: TextFormField(
-                    style: TextStyle(fontSize: 15),
-                    controller: home.wordcontroller.value,
-                    keyboardType: TextInputType.multiline,
-                    decoration: InputDecoration(
-                      suffixIcon: InkWell(
-                          onTap: () {
-                            home.isloading.value = false;
-                            home.findedwords.clear();
-                            home.fetchwords();
-                          },
-                          child: Icon(
-                            Icons.search,
-                            color: Colors.grey,
-                            size: 25,
-                          )),
-                      filled: true,
-                      fillColor: Color(0xffE5E4E2),
-                      border: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(12),
-                          borderSide: BorderSide.none),
-                      hintText: 'தமிழ் சொற்களஞ்சியம்',
-                      isDense: true,
-                      contentPadding:
-                          EdgeInsets.only(top: 4, bottom: 4, left: 6, right: 6),
-                      hintStyle: TextStyle(
-                        color: Colors.black54,
-                        fontSize: 12,
-                      ),
+                child: TextFormField(
+                  autovalidateMode: AutovalidateMode.always,
+                  validator: (value) {
+                    if (value!.isEmpty) {
+                      return "search word is empty";
+                    } else {
+                      return null;
+                    }
+                  },
+                  style: TextStyle(fontSize: 15),
+                  controller: home.wordcontroller.value,
+                  keyboardType: TextInputType.multiline,
+                  decoration: InputDecoration(
+                    suffixIcon: InkWell(
+                        onTap: () {
+                          home.isloading.value = false;
+                          home.findedwords.clear();
+                          home.fetchwords();
+                        },
+                        child: Icon(
+                          Icons.search,
+                          color: Colors.grey,
+                          size: 25,
+                        )),
+                    filled: true,
+                    fillColor: Color(0xffE5E4E2),
+                    border: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(12),
+                        borderSide: BorderSide.none),
+                    hintText: 'search',
+                    isDense: true,
+                    contentPadding: EdgeInsets.all(20),
+                    // contentPadding: EdgeInsets.only(
+                    //     top: 20, bottom: 20, left: 10, right: 10),
+                    hintStyle: TextStyle(
+                      color: Colors.black54,
+                      fontSize: 16,
                     ),
                   ),
                 ),
@@ -185,8 +180,10 @@ class Homeview extends StatelessWidget {
                         padding: const EdgeInsets.only(left: 10, right: 10),
                         child: ListTile(
                           onTap: () {
-                            Get.to(() => wordsview(),
+                            Get.toNamed(AppRoutes.words,
                                 arguments: home.findedwords[index]);
+                            // Get.to(() => wordsview(),
+                            //     arguments: home.findedwords[index]);
                           },
                           title: Html(data: home.findedwords[index].title),
                         ),

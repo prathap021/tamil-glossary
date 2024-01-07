@@ -63,6 +63,16 @@ class DBProvider {
     );
   }
 
+  Future<bool> query(String queryword) async {
+    final db = await database;
+
+    List<Map> result =
+        await db.rawQuery('SELECT * FROM wordsDb WHERE title=?', [queryword]);
+    var res = result.any((element) => element.containsValue(queryword));
+    print(res);
+    return res;
+  }
+
   //get words
   Future<List<WordsDb>> getAllWords() async {
     final db = await database;

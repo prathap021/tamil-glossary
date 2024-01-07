@@ -11,13 +11,14 @@ class FavoriteController extends GetxController {
   @override
   void onInit() {
     super.onInit();
+    print("on init running");
     getwords();
   }
 
   //fetch all words from db
   getwords() async {
     await dbProvider.value.getAllWords().then((res) {
-      update();
+      // update();
       wordsdb.addAll(res);
       debugPrint(res.length.toString());
 

@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:internet_connection_checker/internet_connection_checker.dart';
 import 'package:persistent_bottom_nav_bar/persistent_tab_view.dart';
+import 'package:tamil_glossary/routes/pages.dart';
 import 'package:tamil_glossary/widgets/commonwidgets.dart';
 
 import '../../API/words_api.dart';
@@ -19,7 +20,6 @@ class HomeController extends GetxController {
   RxBool isLoading = false.obs;
   RxInt srsoffset = 0.obs;
   RxInt selectedindex = 0.obs;
-  PageController? pageController;
 
   // RxInt onItemTapped = 0.obs;
   RxList<Tamilwords> findedwords = <Tamilwords>[].obs;
@@ -29,7 +29,6 @@ class HomeController extends GetxController {
   void onInit() {
     super.onInit();
 
-    pageController = PageController();
     findedwords.value.clear();
     scrollController.value.addListener(() {
       if (scrollController.value.position.maxScrollExtent ==
@@ -46,7 +45,6 @@ class HomeController extends GetxController {
 
   @override
   void dispose() {
-    pageController!.dispose();
     wordcontroller.value.dispose();
 
     super.dispose();
@@ -71,10 +69,7 @@ class HomeController extends GetxController {
 
   void onItemTapped(int index) {
     selectedindex.value = index;
-
-    print("index selected ${index}");
-    pageController!.animateToPage(index,
-        duration: Duration(milliseconds: 500), curve: Curves.fastOutSlowIn);
+    Get.deleteAll();
     update();
   }
 }
