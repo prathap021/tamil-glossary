@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_html/flutter_html.dart';
+// import 'package:flutter_html/flutter_html.dart';
 import 'package:get/get.dart';
 import 'package:like_button/like_button.dart';
 import 'package:tamil_glossary/screens/favorite/controller.dart';
@@ -59,12 +59,12 @@ class wordsview extends StatelessWidget {
                       Padding(
                         padding: const EdgeInsets.all(10),
                         child: Container(
-                          child: Html(data: Get.arguments.snippet, style: {
-                            "body": Style(
-                              fontSize: FontSize(15.0),
-                              fontWeight: FontWeight.bold,
-                            ),
-                          }),
+                          // child: Html(data: Get.arguments.snippet, style: {
+                          //   "body": Style(
+                          //     fontSize: FontSize(15.0),
+                          //     fontWeight: FontWeight.bold,
+                          //   ),
+                          // }),
                         ),
                       ),
                       LikeButton(
