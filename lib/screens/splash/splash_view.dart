@@ -3,8 +3,8 @@ import 'package:flutter/src/foundation/key.dart';
 import 'package:flutter/src/widgets/container.dart';
 import 'package:flutter/src/widgets/framework.dart';
 import 'package:get/get.dart';
-import 'package:google_fonts/google_fonts.dart';
-import 'package:tamil_glossary/screens/splash/controller.dart';
+
+import 'package:tamil_glossary/screens/splash/splash_controller.dart';
 
 class Splashview extends StatelessWidget {
   final splah = Get.put(SplashController());

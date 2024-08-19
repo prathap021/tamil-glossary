@@ -13,45 +13,55 @@ class ApiService {
     // getbox.remove("logCookies");
     _dio.options = BaseOptions(
       baseUrl: NetworkConstants.baseUrl,
-      connectTimeout: NetworkConstants.connectionTimeout,
-      receiveTimeout: NetworkConstants.receiveTimeout,
+      connectTimeout: Duration(minutes: 1),
+      receiveTimeout: Duration(minutes: 1),
       responseType: ResponseType.json,
     );
     _dio.interceptors.clear();
-    _dio.interceptors.add(QueuedInterceptorsWrapper(
-      onRequest: (options, handler) async {
-        options.headers['cookie'] = await getbox.read("logCookies");
-        return handler.next(options);
-      },
-      onResponse: (response, handler) {
-        var box = GetStorage();
-        response.headers.forEach((name, values) async {
-          if (name == HttpHeaders.setCookieHeader) {
-            final cookieMap = <String, String>{};
-
-            for (var c in values) {
-              var key = '';
-              var value = '';
-
-              key = c.substring(0, c.indexOf('='));
-              value = c.substring(key.length + 1, c.indexOf(';'));
-
-              cookieMap[key] = value;
-            }
-
-            var cookiesFormatted = '';
-
-            cookieMap
-                .forEach((key, value) => cookiesFormatted += '$key=$value; ');
-
-            getbox.write("logCookies", cookiesFormatted);
-            return;
-          }
-        });
-
-        return handler.next(response);
-      },
-    ));
+    _dio.interceptors.add(
+      LogInterceptor(
+        request : true,
+        requestHeader :true,
+        requestBody : false,
+        responseHeader : true,
+        responseBody : false,
+        error : true,
+      )
+    //     QueuedInterceptorsWrapper(
+    //   onRequest: (options, handler) async {
+    //     options.headers['cookie'] = await getbox.read("logCookies");
+    //     return handler.next(options);
+    //   },
+    //   onResponse: (response, handler) {
+    //     var box = GetStorage();
+    //     response.headers.forEach((name, values) async {
+    //       if (name == HttpHeaders.setCookieHeader) {
+    //         final cookieMap = <String, String>{};
+    //
+    //         for (var c in values) {
+    //           var key = '';
+    //           var value = '';
+    //
+    //           key = c.substring(0, c.indexOf('='));
+    //           value = c.substring(key.length + 1, c.indexOf(';'));
+    //
+    //           cookieMap[key] = value;
+    //         }
+    //
+    //         var cookiesFormatted = '';
+    //
+    //         cookieMap
+    //             .forEach((key, value) => cookiesFormatted += '$key=$value; ');
+    //
+    //         getbox.write("logCookies", cookiesFormatted);
+    //         return;
+    //       }
+    //     });
+    //
+    //     return handler.next(response);
+    //   },
+    // )
+    );
   }
 
   bodyForm(dynamic form) {

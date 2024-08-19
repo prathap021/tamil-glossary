@@ -5,7 +5,7 @@ import 'package:flutter/src/widgets/framework.dart';
 import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
 import 'package:tamil_glossary/routes/pages.dart';
-import 'package:tamil_glossary/screens/setting/controller.dart';
+import 'package:tamil_glossary/screens/setting/setting_controller.dart';
 
 import '../../utils/colors.dart';
 

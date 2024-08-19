@@ -1,5 +1,5 @@
 class NetworkConstants {
-  static const String baseUrl = 'https://test.wikipedia.org/w/api.php';
+  static const String baseUrl = 'https://ta.wikipedia.org/w/api.php';
   static const String action = 'action';
   static const String format = 'format';
   static const String list = 'list';

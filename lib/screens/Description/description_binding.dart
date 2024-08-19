@@ -1,6 +1,6 @@
 import 'package:get/get.dart';
 
-import 'controller.dart';
+import 'description_controller.dart';
 
 class WordsBinding implements Bindings {
   @override

@@ -14,6 +14,7 @@ class Tamilwords {
   int? wordcount;
   String? snippet;
   String? timestamp;
+  bool? selected=true;
 
   Tamilwords(
       {this.ns,
@@ -22,7 +23,7 @@ class Tamilwords {
       this.size,
       this.wordcount,
       this.snippet,
-      this.timestamp});
+      this.timestamp,this.selected});
 
   Tamilwords.fromJson(Map<String, dynamic> json) {
     ns = json['ns'];
@@ -32,6 +33,8 @@ class Tamilwords {
     wordcount = json['wordcount'];
     snippet = json['snippet'];
     timestamp = json['timestamp'];
+    // selected = json['selected'];
+      selected = json['selected'];
   }
 
   Map<String, dynamic> toJson() {
@@ -43,6 +46,7 @@ class Tamilwords {
     data['wordcount'] = wordcount;
     data['snippet'] = snippet;
     data['timestamp'] = timestamp;
+    data['selected'] = selected;
     return data;
   }
 }

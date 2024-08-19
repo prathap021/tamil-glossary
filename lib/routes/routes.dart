@@ -1,16 +1,16 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:tamil_glossary/screens/Description/description_view.dart';
 
-import 'package:tamil_glossary/screens/favorite/view.dart';
-import 'package:tamil_glossary/screens/homepage/binding.dart';
-import 'package:tamil_glossary/screens/splash/view.dart';
-import 'package:tamil_glossary/screens/words_description/view.dart';
+import 'package:tamil_glossary/screens/favorite/favourite_view.dart';
+import 'package:tamil_glossary/screens/homepage/homepage_binding.dart';
+import 'package:tamil_glossary/screens/splash/splash_view.dart';
 
-import '../screens/auth/login/view.dart';
+import '../screens/auth/login/login_view.dart';
 
-import '../screens/favorite/binding.dart';
-import '../screens/homepage/view.dart';
-import '../screens/words_description/binding.dart';
+import '../screens/favorite/favourite_binding.dart';
+import '../screens/homepage/homepage_view.dart';
+
 import 'pages.dart';
 
 class AppPages {
@@ -23,9 +23,9 @@ class AppPages {
     ),
     GetPage(
       transition: Transition.fadeIn,
-      name: AppRoutes.words,
-      page: () => wordsview(),
-      binding: WordsBinding(),
+      name: AppRoutes.wordsDescription,
+      page: () => DescriptionView(),
+      // binding: WordsBinding(),
     ),
     // wordsview()
     GetPage(
@@ -34,19 +34,17 @@ class AppPages {
       page: () => Favoritewords(),
       binding: FavoriteBinding(),
     ),
-    GetPage(
-      transition: Transition.fadeIn,
-      name: AppRoutes.login,
-      page: () => LoginPage(),
-      // binding: FavoriteBinding(),
-    ),
+    // GetPage(
+    //   transition: Transition.fadeIn,
+    //   name: AppRoutes.login,
+    //   // page: () => LoginPage(),
+    //   // binding: FavoriteBinding(),
+    // ),
     GetPage(
       transition: Transition.fadeIn,
       name: AppRoutes.splash,
       page: () => Splashview(),
       // binding: FavoriteBinding(),
     ),
-
-    // Splashview
   ];
 }
